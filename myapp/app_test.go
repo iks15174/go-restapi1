@@ -69,6 +69,7 @@ func TestCreateUserInfo(t *testing.T) {
 	user := new(User)
 	err = json.NewDecoder(res.Body).Decode(user)
 	fmt.Println("user : ", user.firstName)
+	fmt.Println("hi")
 	assert.NoError(err)
 	assert.NotEqual(0, user.id)
 
