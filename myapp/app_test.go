@@ -2,6 +2,7 @@ package myapp
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -49,7 +50,7 @@ func TestGetUserInfo(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
 	data, _ := ioutil.ReadAll(res.Body)
-	assert.Contains(string(data), "User Id:88")
+	assert.Contains(string(data), "No User id:88")
 
 }
 
@@ -67,6 +68,7 @@ func TestCreateUserInfo(t *testing.T) {
 
 	user := new(User)
 	err = json.NewDecoder(res.Body).Decode(user)
+	fmt.Println("user : ", user.firstName)
 	assert.NoError(err)
 	assert.NotEqual(0, user.id)
 
