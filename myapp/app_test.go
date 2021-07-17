@@ -82,3 +82,17 @@ func TestCreateUserInfo(t *testing.T) {
 	assert.Equal(user.FirstName, user2.FirstName)
 
 }
+
+func TestDeleteUser(t *testing.T) {
+	assert := assert.New(t)
+
+	ts := httptest.NewServer(NewHandler())
+	defer ts.Close()
+
+	req, _ := http.NewRequest("DELETE", ts.URL+"/users/1", nil)
+	res, err := http.DefaultClient.Do(req)
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, res.StatusCode)
+	data, _ := ioutil.ReadAll(res.Body)
+	assert.Contains("No User Id:1", string(data))
+}
