@@ -77,6 +77,7 @@ func TestCreateUserInfo(t *testing.T) {
 	res, err = http.Get(ts.URL + "/users/" + strconv.Itoa(id))
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
+	fmt.Print("hi")
 
 	user2 := new(User)
 	err = json.NewDecoder(res.Body).Decode(user2)
