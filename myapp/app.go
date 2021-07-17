@@ -10,12 +10,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//Struct의 변수와 struct tag는 같으면 안된다.
 type User struct {
-	id        int       `json: "id"`
-	firstName string    `json: "firstName"`
-	lastName  string    `json: "lastName"`
-	email     string    `json: "email"`
-	createdAt time.Time `json: "createdAt"`
+	Id        int       `json: "id"`
+	FirstName string    `json: "firstName"`
+	LastName  string    `json: "lastName"`
+	Email     string    `json: "email"`
+	CreatedAt time.Time `json: "createdAt"`
 }
 
 var userMap map[int]*User
@@ -55,7 +56,14 @@ func getUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	user := new(User)
-	err := json.NewDecoder(r.Body).Decode(user)
+
+	/*body to string*/
+	// len := r.ContentLength
+	// body := make([]byte, len)
+	// r.Body.Read(body)
+	// fmt.Println("body : ", string(body))
+
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprint(w, err)
@@ -63,9 +71,10 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	lastId++
-	user.id = lastId
-	user.createdAt = time.Now()
-	userMap[user.id] = user
+	user.Id = lastId
+	user.CreatedAt = time.Now()
+	userMap[user.Id] = user
+	fmt.Println("user firstName : ", user.Id)
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
