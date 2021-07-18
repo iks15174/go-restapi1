@@ -125,7 +125,7 @@ func TestUpdateUser(t *testing.T) {
 	//Creat user finish
 
 	//Udpate user again start
-	updateStr := fmt.Sprintf(`{"id": %d, "firstName": "updated"}`, user.Id)
+	updateStr := fmt.Sprintf(`{"id": %d, "firstName": "updated","firstNameUpdate": true, "lastName": "", "lastNameUpdate": true}`, user.Id)
 	req, _ = http.NewRequest("PUT", ts.URL+"/users",
 		strings.NewReader(updateStr))
 	res, err = http.DefaultClient.Do(req)
@@ -137,7 +137,7 @@ func TestUpdateUser(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(updateUser.Id, user.Id)
 	assert.Equal("updated", updateUser.FirstName)
-	assert.Equal(user.LastName, updateUser.LastName)
+	assert.Equal("", updateUser.LastName)
 	assert.Equal(user.Email, updateUser.Email)
 
 }

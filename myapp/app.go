@@ -19,6 +19,17 @@ type User struct {
 	CreatedAt time.Time `json: "createdAt"`
 }
 
+type UpdateUser struct {
+	Id              int       `json: "id"`
+	FirstName       string    `json: "firstName"`
+	FirstNameUpdate bool      `json: "firstNameUpdate"`
+	LastName        string    `json: "lastName"`
+	LastNameUpdate  bool      `json: "lastNameUpdate"`
+	Email           string    `json: "email"`
+	EmailUpdate     bool      `json: "emailUpdate"`
+	CreatedAt       time.Time `json: "createdAt"`
+}
+
 var userMap map[int]*User
 var lastId int
 
@@ -101,7 +112,7 @@ func deleteUserInfoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateUserHandler(w http.ResponseWriter, r *http.Request) {
-	updateUser := new(User)
+	updateUser := new(UpdateUser)
 	err := json.NewDecoder(r.Body).Decode(updateUser)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -115,13 +126,14 @@ func updateUserHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "No User Id:", updateUser.Id)
 		return
 	}
-	if updateUser.FirstName != "" {
+
+	if updateUser.FirstNameUpdate == true {
 		user.FirstName = updateUser.FirstName
 	}
-	if updateUser.LastName != "" {
+	if updateUser.LastNameUpdate == true {
 		user.LastName = updateUser.LastName
 	}
-	if updateUser.Email != "" {
+	if updateUser.EmailUpdate == true {
 		user.Email = updateUser.Email
 	}
 	w.Header().Add("Content-Type", "application/json")
